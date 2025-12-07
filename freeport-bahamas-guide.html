@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freeport, Grand Bahama - Travel Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .header-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .header-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .header-slide.active {
+            opacity: 1;
+        }
+        
+        .header-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 131, 176, 0.5);
+        }
+        
+        header h1, header .subtitle {
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            color: #0083b0;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #00b4db;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            font-size: 1.6em;
+            margin: 30px 0 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        h3::before {
+            content: '▸';
+            color: #00b4db;
+            margin-right: 10px;
+        }
+        
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .activity-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .activity-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .activity-content {
+            padding: 20px;
+        }
+        
+        .activity-title {
+            font-size: 1.3em;
+            color: #0083b0;
+            margin-bottom: 10px;
+        }
+        
+        .activity-description {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .tips-box {
+            background: #f0f8ff;
+            border-left: 5px solid #00b4db;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        
+        .tips-box h4 {
+            color: #0083b0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .tips-box ul {
+            margin-left: 20px;
+        }
+        
+        .tips-box li {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .charter-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .charter-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .charter-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .charter-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .charter-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .activity-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-slideshow">
+                <div class="header-slide active" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1600&q=80');"></div>
+                <div class="header-slide" style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1600&q=80');"></div>
+                <div class="header-slide" style="background-image: url('https://images.unsplash.com/photo-1589881133595-c7a62d5e6f6e?w=1600&q=80');"></div>
+                <div class="header-slide" style="background-image: url('https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1600&q=80');"></div>
+                <div class="header-slide" style="background-image: url('https://images.unsplash.com/photo-1582564286939-400a311013a2?w=1600&q=80');"></div>
+                <div class="header-slide" style="background-image: url('https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1600&q=80');"></div>
+            </div>
+            <h1>Grand Bahama</h1>
+            <p class="subtitle">Jeff ❤️ Nickie</p>
+        </header>
+        
+        <script>
+            // Header slideshow
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.header-slide');
+            const totalSlides = slides.length;
+            
+            function nextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % totalSlides;
+                slides[currentSlide].classList.add('active');
+            }
+            
+            // Change slide every 4 seconds
+            setInterval(nextSlide, 4000);
+        </script>
+        
+        <div class="content">
+            <!-- Accommodation Details -->
+            <div class="section">
+                <h2>🏠 Your Accommodation</h2>
+                
+                <div class="activity-card" style="max-width: 100%; margin-bottom: 30px;">
+                    <div class="activity-content">
+                        <h3 style="color: #0083b0; margin-top: 0; border: none;">Awesome Beach</h3>
+                        <p style="font-size: 1.1em; margin-bottom: 15px;">📍 Coral Road Condos, next to Laroc Bar and Grill, Freeport</p>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Coordinates: 26°30'09.5"N 78°39'06.8"W</p>
+                        <p style="margin-bottom: 15px;"><strong>Check-in:</strong> December 27, 2025 | <strong>Check-out:</strong> January 4, 2026 (8 nights)</p>
+                        <p class="activity-description" style="font-style: italic; color: #00b4db; font-size: 1.1em;">
+                            "Relax... You're on Island Time"
+                        </p>
+                    </div>
+                </div>
+                
+                <h3>📍 Your Location</h3>
+                <div style="position: relative; width: 100%; height: 450px; margin: 20px 0; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3618.8!2d-78.6519!3d26.5026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDMwJzA5LjUiTiA3OMKwMzknMDYuOCJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                
+                <h3>🗺️ Area Map with Key Attractions</h3>
+                <div id="attractions-map" style="position: relative; width: 100%; height: 500px; margin: 20px 0; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></div>
+                
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script>
+                    // Initialize map centered on your condo
+                    const map = L.map('attractions-map').setView([26.5026, -78.6519], 12);
+                    
+                    // Add OpenStreetMap tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 19
+                    }).addTo(map);
+                    
+                    // Custom icon colors
+                    const homeIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    const attractionIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    const marinaIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    const restaurantIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    const storeIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    const diveIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    // Add markers
+                    const locations = [
+                        // Accommodation
+                        {
+                            name: '🏠 Your Condo - Awesome Beach',
+                            coords: [26.5026, -78.6519],
+                            description: 'Coral Road Condos<br>Next to Laroc Bar & Grill',
+                            icon: homeIcon
+                        },
+                        
+                        // Restaurants
+                        {
+                            name: '🍽️ Laroc Bar & Grill',
+                            coords: [26.5028, -78.6515],
+                            description: 'Restaurant & Bar<br>Right next door!',
+                            icon: restaurantIcon
+                        },
+                        {
+                            name: '🍽️ Billy Joe\'s on the Beach',
+                            coords: [26.5165, -78.6335],
+                            description: 'Taino Beach<br>Authentic Bahamian cuisine',
+                            icon: restaurantIcon
+                        },
+                        {
+                            name: '🍽️ Tony Macaroni\'s',
+                            coords: [26.5170, -78.6330],
+                            description: 'Taino Beach<br>Italian-Caribbean fusion',
+                            icon: restaurantIcon
+                        },
+                        {
+                            name: '🍽️ Sabor Restaurant',
+                            coords: [26.5280, -78.6765],
+                            description: 'Port Lucaya<br>Bahamian specialties',
+                            icon: restaurantIcon
+                        },
+                        {
+                            name: '🍽️ Pier One',
+                            coords: [26.5290, -78.6770],
+                            description: 'Port Lucaya Marina<br>Fine dining',
+                            icon: restaurantIcon
+                        },
+                        
+                        // Grocery Stores
+                        {
+                            name: '🛒 Cost Right',
+                            coords: [26.5156, -78.6689],
+                            description: '2 miles<br>Warehouse supermarket - best prices',
+                            icon: storeIcon
+                        },
+                        {
+                            name: '🛒 Solomon\'s Fresh Market',
+                            coords: [26.5408, -78.6856],
+                            description: 'Downtown Freeport<br>Full supermarket',
+                            icon: storeIcon
+                        },
+                        {
+                            name: '🛒 Bristol Wines & Spirits',
+                            coords: [26.5275, -78.6763],
+                            description: 'Port Lucaya<br>Wine & liquor store',
+                            icon: storeIcon
+                        },
+                        
+                        // Dive Shops
+                        {
+                            name: '🤿 UNEXSO',
+                            coords: [26.5295, -78.6775],
+                            description: 'Port Lucaya<br>World-renowned dive center',
+                            icon: diveIcon
+                        },
+                        {
+                            name: '🤿 Caribbean Divers',
+                            coords: [26.5288, -78.6768],
+                            description: 'Port Lucaya Marina<br>Reef & wreck dives',
+                            icon: diveIcon
+                        },
+                        {
+                            name: '🤿 Paradise Watersports',
+                            coords: [26.5168, -78.6338],
+                            description: 'Taino Beach<br>Snorkel gear & water sports',
+                            icon: diveIcon
+                        },
+                        
+                        // Beaches & Attractions
+                        {
+                            name: '🏖️ Taino Beach',
+                            coords: [26.5167, -78.6333],
+                            description: '2 miles from your condo<br>Popular beach with water sports',
+                            icon: attractionIcon
+                        },
+                        {
+                            name: '🛍️ Port Lucaya Marketplace',
+                            coords: [26.5278, -78.6761],
+                            description: '3 miles<br>Shopping, dining & entertainment',
+                            icon: attractionIcon
+                        },
+                        {
+                            name: '⛵ Port Lucaya Marina',
+                            coords: [26.5292, -78.6772],
+                            description: '3 miles<br>Boat charters & excursions',
+                            icon: marinaIcon
+                        },
+                        {
+                            name: '🌊 Gold Rock Beach',
+                            coords: [26.6333, -78.4167],
+                            description: '15 miles east<br>Stunning natural beach',
+                            icon: attractionIcon
+                        },
+                        {
+                            name: '🌳 Lucayan National Park',
+                            coords: [26.6189, -78.4581],
+                            description: '15 miles east<br>Cave systems & nature trails',
+                            icon: attractionIcon
+                        },
+                        {
+                            name: '🌺 Garden of the Groves',
+                            coords: [26.5517, -78.6728],
+                            description: '5 miles<br>Botanical gardens',
+                            icon: attractionIcon
+                        },
+                        {
+                            name: '🚢 Freeport Harbor',
+                            coords: [26.5369, -78.6947],
+                            description: '4 miles<br>Ferry terminal (return trip)',
+                            icon: marinaIcon
+                        }
+                    ];
+                    
+                    // Create a feature group to hold all markers
+                    const markersGroup = L.featureGroup();
+                    
+                    locations.forEach(loc => {
+                        const marker = L.marker(loc.coords, {icon: loc.icon})
+                            .bindPopup(`<strong>${loc.name}</strong><br>${loc.description}`);
+                        markersGroup.addLayer(marker);
+                    });
+                    
+                    // Add markers to map
+                    markersGroup.addTo(map);
+                    
+                    // Fit map bounds to show all markers with padding
+                    map.fitBounds(markersGroup.getBounds(), {
+                        padding: [50, 50]
+                    });
+                    
+                    // Add a circle around your condo
+                    L.circle([26.5026, -78.6519], {
+                        color: 'red',
+                        fillColor: '#f03',
+                        fillOpacity: 0.1,
+                        radius: 500
+                    }).addTo(map).bindPopup('Your accommodation area');
+                </script>
+                
+                <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 5px;">
+                    <p style="margin: 0;"><strong>📌 Interactive Map Legend:</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 15px;">
+                        <div>🔴 <strong>Red Pin</strong> - Your Condo (Awesome Beach)</div>
+                        <div>🟠 <strong>Orange Pins</strong> - Restaurants & Dining</div>
+                        <div>🟣 <strong>Purple Pins</strong> - Grocery Stores & Shopping</div>
+                        <div>🟡 <strong>Yellow Pins</strong> - Dive Shops & Water Sports</div>
+                        <div>🔵 <strong>Blue Pins</strong> - Beaches & Attractions</div>
+                        <div>🟢 <strong>Green Pins</strong> - Marinas & Ferry Terminal</div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                        💡 Click on any marker for details and zoom in/out to explore the area
+                    </p>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>📍 Nearby Attractions from Awesome Beach</h4>
+                    <ul>
+                        <li><strong>Taino Beach</strong> - 2 miles (5 min drive) - Popular beach with restaurants and water sports</li>
+                        <li><strong>Port Lucaya Marketplace</strong> - 3 miles (8 min drive) - Shopping, dining, and nightlife</li>
+                        <li><strong>Port Lucaya Marina</strong> - 3 miles (8 min drive) - Charter boats and water excursions</li>
+                        <li><strong>Gold Rock Beach</strong> - 15 miles (25 min drive) - Stunning natural beach in Lucayan National Park</li>
+                        <li><strong>Lucayan National Park</strong> - 15 miles (25 min drive) - Cave systems and nature trails</li>
+                        <li><strong>Garden of the Groves</strong> - 5 miles (12 min drive) - Botanical gardens</li>
+                        <li><strong>Freeport Harbor</strong> - 4 miles (10 min drive) - Where your return ferry departs</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🚗 Getting Around</h4>
+                    <ul>
+                        <li><strong>Rental Car</strong> - Recommended for exploring the island at your own pace</li>
+                        <li><strong>Taxis</strong> - Available but can be expensive for multiple trips</li>
+                        <li><strong>Scooter Rentals</strong> - Fun way to get around for short distances</li>
+                        <li><strong>Hotel/Resort Shuttles</strong> - Check if Awesome Beach offers any shuttle services</li>
+                        <li><strong>Bicycle Rentals</strong> - Great for nearby beaches and attractions</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Restaurants & Dining -->
+            <div class="section">
+                <h2>🍽️ Restaurants & Dining</h2>
+                
+                <h3>Near Your Condo (Coral Road Area)</h3>
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80" alt="Beachside Restaurant" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Laroc Bar & Grill</h4>
+                            <p class="activity-description">📍 Next door to your condo! Casual beachfront dining with fresh seafood, burgers, and tropical drinks. Great sunset views and live music on weekends.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80" alt="Seafood Restaurant" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Billy Joe's on the Beach</h4>
+                            <p class="activity-description">📍 Taino Beach (2 miles) - Authentic Bahamian cuisine, conch fritters, cracked conch, and fresh fish. Toes-in-the-sand dining experience.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Fine Dining" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Tony Macaroni's</h4>
+                            <p class="activity-description">📍 Taino Beach (2 miles) - Upscale Italian-Caribbean fusion. Famous for conch ravioli and fresh pasta. Reservations recommended.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Port Lucaya Area (3 miles)</h3>
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80" alt="Caribbean Food" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Sabor Restaurant & Bar</h4>
+                            <p class="activity-description">📍 Port Lucaya - Authentic Bahamian dishes, grouper, lobster, and conch salad. Live Junkanoo music and waterfront seating.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80" alt="Pizza Restaurant" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Zorba's Greek Cuisine</h4>
+                            <p class="activity-description">📍 Port Lucaya Marketplace - Mediterranean flavors, gyros, souvlaki, and fresh salads. Great for a casual lunch or dinner.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=800&q=80" alt="Upscale Dining" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Pier One</h4>
+                            <p class="activity-description">📍 Port Lucaya Marina - Waterfront fine dining with stunning views. Known for fresh seafood, steaks, and an extensive wine list.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🍴 Dining Tips</h4>
+                    <ul>
+                        <li><strong>Local Specialties:</strong> Must-try dishes include conch salad, cracked conch, Bahamian rock lobster, and grouper</li>
+                        <li><strong>Fish Fry:</strong> Ask locals about the weekly fish fry events for authentic street food</li>
+                        <li><strong>Happy Hours:</strong> Many restaurants offer 4-6pm happy hour specials</li>
+                        <li><strong>Reservations:</strong> Call ahead for upscale restaurants, especially on weekends</li>
+                        <li><strong>Tipping:</strong> 15-20% is standard; some restaurants add automatic gratuity</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Grocery Stores & Shopping -->
+            <div class="section">
+                <h2>🛒 Grocery Stores & Supplies</h2>
+                
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&q=80" alt="Supermarket" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Cost Right</h4>
+                            <p class="activity-description">📍 2 miles from your condo - Large warehouse-style supermarket. Best prices on groceries, alcohol, and household items. Membership not required.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80" alt="Local Market" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Solomon's Fresh Market</h4>
+                            <p class="activity-description">📍 Downtown Freeport (4 miles) - Well-stocked local supermarket. Good selection of fresh produce, meats, and international foods.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80" alt="Convenience Store" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Kelly's Food Store</h4>
+                            <p class="activity-description">📍 Multiple locations - Smaller grocery chain, convenient for quick trips. Fresh bakery and deli sections available.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80" alt="Liquor Store" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Bristol Wines & Spirits</h4>
+                            <p class="activity-description">📍 Port Lucaya (3 miles) - Excellent selection of wine, rum, beer, and spirits. Bahamian rum and local Kalik beer are must-tries!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🛍️ Shopping Tips</h4>
+                    <ul>
+                        <li><strong>Stock Up Early:</strong> Visit the grocery store on your first day to stock the condo</li>
+                        <li><strong>Prices:</strong> Groceries are more expensive than mainland US (20-30% higher on average)</li>
+                        <li><strong>Local Products:</strong> Try Bahamian-made items like Kalik beer, conch salad, and fresh fish from markets</li>
+                        <li><strong>Store Hours:</strong> Most stores open 8am-8pm, some close early on Sundays</li>
+                        <li><strong>Reusable Bags:</strong> Bring your own or purchase at checkout</li>
+                        <li><strong>Beach Supplies:</strong> Pick up coolers, beach chairs, and snorkel gear if not provided at your condo</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Scuba Diving & Water Sports -->
+            <div class="section">
+                <h2>🤿 Scuba Diving & Water Sports</h2>
+                
+                <h3>Dive Shops & Operators</h3>
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" alt="Scuba Diving" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">UNEXSO (Underwater Explorers Society)</h4>
+                            <p class="activity-description">📍 Port Lucaya (3 miles) - World-renowned dive center. PADI courses, shark dives, dolphin dives, and wall dives. Equipment rental available.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&q=80" alt="Dive Boat" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Caribbean Divers</h4>
+                            <p class="activity-description">📍 Port Lucaya Marina - Personalized dive trips for small groups. Specializes in reef dives, wreck dives, and night dives. All levels welcome.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1583702906728-4ebc1d22a0b6?w=800&q=80" alt="Wreck Diving" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Sunn Odyssey Divers</h4>
+                            <p class="activity-description">📍 Port Lucaya - Boutique dive operation. Offers wreck penetration, cave diving, and advanced certifications. Small groups only.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Popular Dive Sites</h3>
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80" alt="Shark Diving" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Shark Junction</h4>
+                            <p class="activity-description">45-50 feet deep - Famous shark feeding dive. Encounter Caribbean reef sharks in their natural habitat. Advanced Open Water required.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1682687221038-404cb8830901?w=800&q=80" alt="Wall Diving" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Theo's Wreck</h4>
+                            <p class="activity-description">90-100 feet deep - 230-foot freighter sunk in 1982. Covered in corals and sponges. Perfect for underwater photography. Advanced divers.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=800&q=80" alt="Coral Reef" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Ben's Cavern</h4>
+                            <p class="activity-description">20-40 feet deep - Underwater cave system with stunning stalactites and stalagmites. Good visibility. Cavern certification recommended.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1682687220499-d9c06d0d0395?w=800&q=80" alt="Reef Diving" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Pygmy Caves</h4>
+                            <p class="activity-description">40-60 feet deep - Beautiful reef with swim-throughs and abundant marine life. Sea turtles, groupers, and angelfish. Great for all levels.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🤿 Diving Tips & Information</h4>
+                    <ul>
+                        <li><strong>Certification:</strong> Bring your PADI/SSI certification card and dive log</li>
+                        <li><strong>Best Diving Season:</strong> Year-round, but April-November offers warmest water (80-84°F)</li>
+                        <li><strong>Visibility:</strong> Typically 60-100+ feet, some sites reach 150+ feet</li>
+                        <li><strong>Book in Advance:</strong> Popular dives (especially shark dives) fill up quickly</li>
+                        <li><strong>Two-Tank Dives:</strong> Most operators offer morning two-tank trips ($120-150)</li>
+                        <li><strong>Equipment:</strong> Full rental packages available ($40-60/day)</li>
+                        <li><strong>Discover Scuba:</strong> Never dived? Try an intro dive ($99-150)</li>
+                        <li><strong>Medical:</strong> No dive medical required for recreational diving if healthy</li>
+                        <li><strong>Flying:</strong> Wait 18-24 hours after diving before your return ferry/flight</li>
+                    </ul>
+                </div>
+                
+                <h3>Snorkeling Equipment & Rentals</h3>
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1530870110042-98b2cb110834?w=800&q=80" alt="Snorkel Gear" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Paradise Watersports</h4>
+                            <p class="activity-description">📍 Taino Beach & Port Lucaya - Snorkel gear rentals ($15/day), kayaks, paddleboards, jet skis, and parasailing. Beach chair rentals too.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80" alt="Water Sports" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">H2O Sports</h4>
+                            <p class="activity-description">📍 Multiple beach locations - Full water sports rentals. Guided snorkel tours to Peterson Cay ($65/person). Equipment in excellent condition.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🏊 Best Snorkeling Spots</h4>
+                    <ul>
+                        <li><strong>Peterson Cay National Park</strong> - Short boat ride, pristine reef, sea turtles (guided tours recommended)</li>
+                        <li><strong>Deadman's Reef</strong> - Shore dive/snorkel from Paradise Cove, colorful fish and corals</li>
+                        <li><strong>Taino Beach</strong> - Easy access right from the beach, good for beginners</li>
+                        <li><strong>Gold Rock Beach</strong> - Snorkel near the rocks at low tide, calm waters</li>
+                        <li><strong>Smith's Point</strong> - Less crowded, excellent visibility on calm days</li>
+                    </ul>
+                </div>
+            <div class="section">
+                <h2>🏖️ Beach & Water Activities</h2>
+                
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" alt="Beautiful Bahamas Beach" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Pristine Beaches</h4>
+                            <p class="activity-description">Visit Taino Beach and Gold Rock Beach for stunning turquoise waters and powdery white sand. Gold Rock Beach is often ranked among the most beautiful beaches in the world.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80" alt="Snorkeling in Bahamas" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Snorkeling Adventures</h4>
+                            <p class="activity-description">Explore Peterson Cay National Park and Deadman's Reef. Crystal-clear waters teeming with colorful fish, sea turtles, and vibrant coral formations.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1544472845-1da9e841d832?w=800&q=80" alt="Scuba Diving" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Scuba Diving</h4>
+                            <p class="activity-description">Discover underwater caves, dramatic walls, and historic shipwrecks. Perfect for both beginners and experienced divers with sites ranging from 15-100+ feet.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1607808734096-bc8e8f2c037b?w=800&q=80" alt="Dolphins Swimming" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Dolphin Encounters</h4>
+                            <p class="activity-description">Swim with dolphins at Sanctuary Bay for an unforgettable experience. Interact with these intelligent creatures in their natural habitat.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1544551763-92ed6a3a3cfa?w=800&q=80" alt="Kayaking through mangroves" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Kayaking</h4>
+                            <p class="activity-description">Paddle through Lucayan National Park's serene mangrove creeks. Spot tropical birds, baby fish, and enjoy the peaceful natural surroundings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Land Activities -->
+            <div class="section">
+                <h2>🌴 Land Activities</h2>
+                
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1580077478204-a0056d08f05f?w=800&q=80" alt="Cave System" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Lucayan National Park</h4>
+                            <p class="activity-description">Explore one of the world's longest underwater cave systems. Walk nature trails, discover hidden beaches, and learn about the island's Lucayan heritage.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1601823984263-b55ba057ee93?w=800&q=80" alt="Port Lucaya Marketplace" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Port Lucaya Marketplace</h4>
+                            <p class="activity-description">Experience local culture with shopping, waterfront dining, live music, and authentic Bahamian crafts. Perfect for evening strolls and entertainment.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80" alt="Botanical Gardens" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">Garden of the Groves</h4>
+                            <p class="activity-description">Wander through 12 acres of botanical gardens featuring waterfalls, flowering plants, and a chapel. Home to over 10,000 plant species and native wildlife.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Boat Charters -->
+            <div class="section">
+                <h2>⛵ Boat Charter Options</h2>
+                
+                <h3>Featured Charter Companies</h3>
+                
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80" alt="Fishing Charter" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🎣 Grand Bahama Fishing Charters</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Port Lucaya Marina<br>
+                                <strong>Specialty:</strong> Deep sea fishing & reef fishing<br>
+                                <strong>Boat:</strong> 38' custom sport fishing vessel<br>
+                                <strong>Website:</strong> <a href="https://www.grandbahamafishing.com" target="_blank" style="color: #00b4db;">grandbahamafishing.com</a>
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Popular Packages:</strong><br>
+                                • Half-Day (4 hrs) - $600 (up to 4 people)<br>
+                                • Full-Day (8 hrs) - $1,100 (up to 4 people)<br>
+                                • Includes: All tackle, bait, fishing license, water<br>
+                                • Target: Mahi-mahi, wahoo, tuna, marlin, grouper
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1621277224630-81a2a9cbf738?w=800&q=80" alt="Snorkel Tour" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🤿 Pat & Diane Snorkeling Tours</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Taino Beach & Port Lucaya<br>
+                                <strong>Specialty:</strong> Snorkel adventures & eco-tours<br>
+                                <strong>Boat:</strong> 28' power catamaran (smooth ride)<br>
+                                <strong>Phone:</strong> +1 (242) 373-8681
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Popular Packages:</strong><br>
+                                • Peterson Cay Tour - $85/person (3 hrs)<br>
+                                • Deadman's Reef - $75/person (2.5 hrs)<br>
+                                • Sunset Snorkel Cruise - $95/person (3 hrs)<br>
+                                • Includes: Equipment, drinks, snacks, guide<br>
+                                • Minimum: 4 people | Maximum: 12 people
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" alt="Private Charter" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🏖️ Island Seas Resort Water Sports</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Island Seas Resort (near your condo!)<br>
+                                <strong>Specialty:</strong> Beach hopping & private charters<br>
+                                <strong>Boat:</strong> Various vessels 22'-35'<br>
+                                <strong>Phone:</strong> +1 (242) 373-1271
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Popular Packages:</strong><br>
+                                • Private Beach Picnic - $450 (half-day, up to 6)<br>
+                                • Island Hopping Tour - $800 (full-day, up to 8)<br>
+                                • Secluded Cay Experience - $350 (4 hrs, up to 4)<br>
+                                • Includes: Captain, cooler, beach setup, snorkel gear<br>
+                                • Customizable itineraries available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Luxury & Specialty Charters</h3>
+                
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800&q=80" alt="Sunset Cruise" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🌅 Bahamas Ocean Safaris</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Port Lucaya Marina<br>
+                                <strong>Specialty:</strong> Luxury sunset cruises & romantic charters<br>
+                                <strong>Boat:</strong> 45' luxury yacht with cabin<br>
+                                <strong>Website:</strong> <a href="https://www.bahamaswatersports.com" target="_blank" style="color: #00b4db;">bahamaswatersports.com</a>
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Romantic Packages:</strong><br>
+                                • Sunset Champagne Cruise - $500 (2 hrs, up to 6)<br>
+                                • Private Dinner Cruise - $850 (3 hrs, up to 4)<br>
+                                • Full-Day Luxury Charter - $1,800 (8 hrs, up to 8)<br>
+                                • Includes: Open bar, gourmet appetizers, captain & crew<br>
+                                • Perfect for special occasions!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=800&q=80" alt="Sailing Charter" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">⛵ Caribbean Wind Sailing</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Port Lucaya Marina<br>
+                                <strong>Specialty:</strong> Sailing adventures & eco-sailing<br>
+                                <strong>Boat:</strong> 42' sailing catamaran<br>
+                                <strong>Phone:</strong> +1 (242) 352-9311
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Sailing Packages:</strong><br>
+                                • Morning Sail & Snorkel - $95/person (4 hrs)<br>
+                                • Sunset Sail - $75/person (2 hrs)<br>
+                                • Private Full-Day Charter - $1,200 (up to 12)<br>
+                                • Includes: Crew, drinks, snacks, snorkel stops<br>
+                                • Eco-friendly sailing experience
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" alt="Dolphin Tour" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🐬 Wild Dolphin Adventures</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Port Lucaya Marina<br>
+                                <strong>Specialty:</strong> Wild dolphin encounters & eco-tours<br>
+                                <strong>Boat:</strong> 30' custom tour boat<br>
+                                <strong>Website:</strong> <a href="https://www.wilddolphintours.com" target="_blank" style="color: #00b4db;">wilddolphintours.com</a>
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Dolphin Packages:</strong><br>
+                                • Wild Dolphin Encounter - $125/person (4 hrs)<br>
+                                • Dolphin & Snorkel Combo - $150/person (5 hrs)<br>
+                                • Private Dolphin Charter - $900 (half-day, up to 6)<br>
+                                • Includes: Equipment, guide, lunch, drinks<br>
+                                • 90% dolphin sighting success rate!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Budget-Friendly Options</h3>
+                
+                <div class="activity-grid">
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1530870110042-98b2cb110834?w=800&q=80" alt="Group Tours" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🚤 Reef Tours Grand Bahama</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Taino Beach<br>
+                                <strong>Specialty:</strong> Affordable group snorkel tours<br>
+                                <strong>Boat:</strong> 35' tour boat (holds 20)<br>
+                                <strong>Phone:</strong> +1 (242) 351-9450
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Budget Packages:</strong><br>
+                                • Reef Snorkel Tour - $45/person (2 hrs)<br>
+                                • Three-Stop Snorkel - $65/person (3 hrs)<br>
+                                • Sunset Cruise (no snorkel) - $35/person (1.5 hrs)<br>
+                                • Includes: Equipment, water, guide<br>
+                                • Great for groups and families!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <img src="https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=800&q=80" alt="Boat Rental" class="activity-image">
+                        <div class="activity-content">
+                            <h4 class="activity-title">🛥️ Do-It-Yourself Boat Rentals</h4>
+                            <p class="activity-description">
+                                <strong>Location:</strong> Port Lucaya Marina<br>
+                                <strong>Specialty:</strong> Self-drive boat rentals<br>
+                                <strong>Company:</strong> Freeport Boat Rentals<br>
+                                <strong>Phone:</strong> +1 (242) 373-4892
+                            </p>
+                            <div style="margin-top: 15px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                                <strong>Rental Options:</strong><br>
+                                • 19' Center Console - $275/half-day, $450/full-day<br>
+                                • 23' Deck Boat - $350/half-day, $600/full-day<br>
+                                • 26' Pontoon Boat - $300/half-day, $500/full-day<br>
+                                • Includes: Fuel, cooler, safety equipment<br>
+                                • Boating license/experience required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>⚓ Booking & Planning Tips</h4>
+                    <ul>
+                        <li><strong>Book Early:</strong> Popular charters (especially fishing & sunset cruises) book 2-3 weeks in advance during peak season</li>
+                        <li><strong>Weather Dependent:</strong> All charters are weather-dependent. Most operators offer full refunds for weather cancellations</li>
+                        <li><strong>Gratuity:</strong> 15-20% tip is customary for captains and crew, usually not included in price</li>
+                        <li><strong>What to Bring:</strong> Sunscreen (reef-safe), sunglasses, hat, towel, camera, and motion sickness medication if needed</li>
+                        <li><strong>Private vs Shared:</strong> Private charters cost more but offer flexibility in schedule and destinations</li>
+                        <li><strong>Food & Drinks:</strong> Some charters include lunch/snacks, others allow you to bring your own (BYOB often welcomed)</li>
+                        <li><strong>Group Discounts:</strong> Many operators offer discounts for groups of 6+</li>
+                        <li><strong>Best Times:</strong> Morning departures (8-9am) often have calmer seas; sunset cruises (5-7pm) offer stunning views</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-box" style="background: #fff3e0; border-left-color: #ff9800;">
+                    <h4>📞 Quick Contact Directory</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div>
+                            <strong>Grand Bahama Fishing</strong><br>
+                            📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="137a7d757c537471757a607b7a7d743d707c7e">[email&#160;protected]</a><br>
+                            📱 +1 (242) 373-5880
+                        </div>
+                        <div>
+                            <strong>Pat & Diane Tours</strong><br>
+                            📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1b6b7a6f7a757f727a757e5b797a6f7e77757e6f357968">[email&#160;protected]</a><br>
+                            📱 +1 (242) 373-8681
+                        </div>
+                        <div>
+                            <strong>Island Seas Water Sports</strong><br>
+                            📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9cebfde8f9eeefecf3eee8efdcf5eff0fdf2f8eff9fdefb2fff3f1">[email&#160;protected]</a><br>
+                            📱 +1 (242) 373-1271
+                        </div>
+                        <div>
+                            <strong>Bahamas Ocean Safaris</strong><br>
+                            📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0a63646c654a686b626b676b7965696f6b64796b6c6b78637924696567">[email&#160;protected]</a><br>
+                            📱 +1 (242) 352-5441
+                        </div>
+                        <div>
+                            <strong>Caribbean Wind Sailing</strong><br>
+                            📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2b1a3abae82a1a3b0aba0a0a7a3acb5abaca6eca1adaf">[email&#160;protected]</a><br>
+                            📱 +1 (242) 352-9311
+                        </div>
+                        <div>
+                            <strong>Port Lucaya Marina Office</strong><br>
+                            General charter inquiries<br>
+                            📱 +1 (242) 373-9090
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Types of Charter Experiences</h3>
+                
+                <div class="charter-types">
+                    <div class="charter-card">
+                        <div class="charter-icon">🎣</div>
+                        <div class="charter-title">Fishing Charters</div>
+                        <p><strong>$600-$1,100</strong><br>Deep sea or reef fishing. Half-day or full-day trips. All equipment included.</p>
+                    </div>
+                    
+                    <div class="charter-card">
+                        <div class="charter-icon">🏖️</div>
+                        <div class="charter-title">Private Beach Tours</div>
+                        <p><strong>$350-$800</strong><br>Visit secluded beaches and pristine cays. Perfect for couples or families.</p>
+                    </div>
+                    
+                    <div class="charter-card">
+                        <div class="charter-icon">🤿</div>
+                        <div class="charter-title">Snorkel Trips</div>
+                        <p><strong>$45-$150</strong><br>Guided tours to best reefs. Equipment and lunch included on longer trips.</p>
+                    </div>
+                    
+                    <div class="charter-card">
+                        <div class="charter-icon">🌅</div>
+                        <div class="charter-title">Sunset Cruises</div>
+                        <p><strong>$35-$850</strong><br>Romantic evening sails. Options from group tours to private luxury charters.</p>
+                    </div>
+                    
+                    <div class="charter-card">
+                        <div class="charter-icon">🏝️</div>
+                        <div class="charter-title">Island Hopping</div>
+                        <p><strong>$65-$1,200</strong><br>Explore multiple islands. Full-day adventures with snorkel stops.</p>
+                    </div>
+                    
+                    <div class="charter-card">
+                        <div class="charter-icon">🐬</div>
+                        <div class="charter-title">Dolphin Encounters</div>
+                        <p><strong>$125-$900</strong><br>Wild dolphin watching & swimming. Eco-friendly tours with expert guides.</p>
+                    </div>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🗺️ Where to Find Charter Operators</h4>
+                    <ul>
+                        <li><strong>Port Lucaya Marina</strong> - Main hub with 15+ charter operators. Walk the docks to compare options and prices</li>
+                        <li><strong>Taino Beach</strong> - Several operators right on the beach, convenient for walk-up bookings</li>
+                        <li><strong>Hotel Concierge Services</strong> - Can arrange charters and sometimes get group discounts</li>
+                        <li><strong>Your Condo - Awesome Beach</strong> - Ask Laroc Bar & Grill next door for local charter recommendations</li>
+                        <li><strong>Online Booking</strong> - Reserve through TripAdvisor, Viator, or directly with operators for best rates</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Travel Info -->
+            <div class="section">
+                <h2>✈️ Your Trip Details</h2>
+                
+                <div class="tips-box">
+                    <h4>Based on Your Booking</h4>
+                    <ul>
+                        <li><strong>Route:</strong> Fort Lauderdale, FL ↔ Freeport, Grand Bahama</li>
+                        <li><strong>Ferry Operator:</strong> Baleària Caribbean</li>
+                        <li><strong>Departure:</strong> December 27, 2025 at 9:00 AM</li>
+                        <li><strong>Return:</strong> January 3, 2026 at 6:30 PM</li>
+                        <li><strong>Check-in:</strong> Arrive 3 hours before departure at Port Everglades Terminal 21</li>
+                    </ul>
+                </div>
+                
+                <div class="tips-box">
+                    <h4>🎒 Essential Packing List</h4>
+                    <ul>
+                        <li>Valid passport (required for Bahamas entry)</li>
+                        <li>Reef-safe sunsc
