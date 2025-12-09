@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freeport, Grand Bahama - Travel Guide</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         * {
             margin: 0;
@@ -399,27 +401,24 @@
                 
                 <h3>📍 Your Location</h3>
                 <div style="position: relative; width: 100%; height: 450px; margin: 20px 0; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3618.8!2d-78.6519!3d26.5026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDMwJzA5LjUiTiA3OMKwMzknMDYuOCJX!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus" 
-                        width="100%" 
-                        height="450" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+                <div id="location-map" style="position: relative; width: 100%; height: 450px; margin: 20px 0; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1;"></div>
                 </div>
                 
                 <h3>🗺️ Area Map with Key Attractions</h3>
-                <div id="attractions-map" style="position: relative; width: 100%; height: 500px; margin: 20px 0; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2);"></div>
+                <div id="attractions-map" style="position: relative; width: 100%; height: 500px; margin: 20px 0; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1;"></div>
                 
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
                 <script>
-                    // Initialize map centered on your condo
+                    // Initialize Location Map (Zoomed in)
+                    const locationMap = L.map('location-map').setView([26.5026, -78.6519], 16);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 19
+                    }).addTo(locationMap);
+
+                    // Initialize Area Map (Zoomed out)
                     const map = L.map('attractions-map').setView([26.5026, -78.6519], 12);
                     
-                    // Add OpenStreetMap tiles
+                    // Add OpenStreetMap tiles to Area Map
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '© OpenStreetMap contributors',
                         maxZoom: 19
@@ -637,6 +636,20 @@
                         fillOpacity: 0.1,
                         radius: 500
                     }).addTo(map).bindPopup('Your accommodation area');
+
+                    // Add marker to Location Map
+                    L.marker([26.5026, -78.6519], {icon: homeIcon})
+                        .addTo(locationMap)
+                        .bindPopup('<strong>🏠 Your Condo</strong><br>Awesome Beach')
+                        .openPopup();
+                        
+                    // Add circle to Location Map
+                    L.circle([26.5026, -78.6519], {
+                        color: 'red',
+                        fillColor: '#f03',
+                        fillOpacity: 0.1,
+                        radius: 200
+                    }).addTo(locationMap);
                 </script>
                 
                 <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 5px;">
