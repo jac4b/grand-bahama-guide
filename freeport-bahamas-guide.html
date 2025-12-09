@@ -396,6 +396,186 @@
                     </div>
                 </div>
                 
+                <!-- Weather Widget -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                    <h3 style="color: white; margin-top: 0; border: none; font-size: 1.8em; margin-bottom: 20px;">🌤️ Current Weather in Freeport</h3>
+                    
+                    <div id="weather-widget">
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 1.2em;">Loading weather data...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <script>
+                    async function loadWeather() {
+                        try {
+                            // Coordinates for Freeport, Grand Bahama
+                            const lat = 26.5026;
+                            const lon = -78.6519;
+                            
+                            // Fetch weather data from Open-Meteo API (free, no API key needed)
+                            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America/Nassau&forecast_days=4`);
+                            
+                            const data = await response.json();
+                            
+                            // Get moon phase data
+                            const moonResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=sunrise,sunset&timezone=America/Nassau&forecast_days=14`);
+                            const moonData = await moonResponse.json();
+                            
+                            displayWeather(data, moonData);
+                        } catch (error) {
+                            document.getElementById('weather-widget').innerHTML = '<div style="text-align: center; padding: 20px;">Unable to load weather data. Please check your internet connection.</div>';
+                        }
+                    }
+                    
+                    function getWeatherIcon(code) {
+                        const icons = {
+                            0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+                            45: '🌫️', 48: '🌫️',
+                            51: '🌦️', 53: '🌦️', 55: '🌦️',
+                            61: '🌧️', 63: '🌧️', 65: '🌧️',
+                            71: '🌨️', 73: '🌨️', 75: '🌨️',
+                            80: '🌦️', 81: '🌦️', 82: '🌧️',
+                            95: '⛈️', 96: '⛈️', 99: '⛈️'
+                        };
+                        return icons[code] || '🌤️';
+                    }
+                    
+                    function getWeatherDescription(code) {
+                        const descriptions = {
+                            0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+                            45: 'Foggy', 48: 'Foggy',
+                            51: 'Light drizzle', 53: 'Moderate drizzle', 55: 'Dense drizzle',
+                            61: 'Slight rain', 63: 'Moderate rain', 65: 'Heavy rain',
+                            71: 'Slight snow', 73: 'Moderate snow', 75: 'Heavy snow',
+                            80: 'Slight showers', 81: 'Moderate showers', 82: 'Violent showers',
+                            95: 'Thunderstorm', 96: 'Thunderstorm with hail', 99: 'Thunderstorm with hail'
+                        };
+                        return descriptions[code] || 'Unknown';
+                    }
+                    
+                    function getMoonPhase() {
+                        const date = new Date();
+                        const year = date.getFullYear();
+                        const month = date.getMonth();
+                        const day = date.getDate();
+                        
+                        // Simple moon phase calculation
+                        const c = Math.floor(365.25 * year);
+                        const e = Math.floor(30.6 * (month + 1));
+                        const jd = c + e + day - 694039.09;
+                        const phase = (jd % 29.53) / 29.53;
+                        
+                        // Calculate next full moon (approximate)
+                        const daysUntilFull = phase < 0.5 ? (0.5 - phase) * 29.53 : (1.5 - phase) * 29.53;
+                        const nextFullMoon = new Date(date.getTime() + daysUntilFull * 24 * 60 * 60 * 1000);
+                        
+                        let phaseEmoji = '🌑';
+                        let phaseName = 'New Moon';
+                        if (phase < 0.125) { phaseEmoji = '🌑'; phaseName = 'New Moon'; }
+                        else if (phase < 0.25) { phaseEmoji = '🌒'; phaseName = 'Waxing Crescent'; }
+                        else if (phase < 0.375) { phaseEmoji = '🌓'; phaseName = 'First Quarter'; }
+                        else if (phase < 0.5) { phaseEmoji = '🌔'; phaseName = 'Waxing Gibbous'; }
+                        else if (phase < 0.625) { phaseEmoji = '🌕'; phaseName = 'Full Moon'; }
+                        else if (phase < 0.75) { phaseEmoji = '🌖'; phaseName = 'Waning Gibbous'; }
+                        else if (phase < 0.875) { phaseEmoji = '🌗'; phaseName = 'Last Quarter'; }
+                        else { phaseEmoji = '🌘'; phaseName = 'Waning Crescent'; }
+                        
+                        return { emoji: phaseEmoji, name: phaseName, nextFull: nextFullMoon };
+                    }
+                    
+                    function displayWeather(data, moonData) {
+                        const current = data.current;
+                        const daily = data.daily;
+                        const moonPhase = getMoonPhase();
+                        
+                        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        
+                        let html = `
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                                <!-- Current Conditions -->
+                                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; border: 2px solid rgba(255,255,255,0.3);">
+                                    <div style="font-size: 1.1em; margin-bottom: 15px; opacity: 0.9;">Right Now</div>
+                                    <div style="font-size: 4em; line-height: 1; margin: 10px 0;">${getWeatherIcon(current.weather_code)}</div>
+                                    <div style="font-size: 3em; font-weight: bold; margin: 10px 0;">${Math.round(current.temperature_2m)}°F</div>
+                                    <div style="font-size: 1.1em; margin-bottom: 10px;">${getWeatherDescription(current.weather_code)}</div>
+                                    <div style="font-size: 0.95em; opacity: 0.85;">Feels like ${Math.round(current.apparent_temperature)}°F</div>
+                                </div>
+                                
+                                <!-- Details -->
+                                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; border: 2px solid rgba(255,255,255,0.3);">
+                                    <div style="font-size: 1.1em; margin-bottom: 15px; opacity: 0.9;">Details</div>
+                                    <div style="display: grid; gap: 12px; font-size: 0.95em;">
+                                        <div><strong>💨 Wind:</strong> ${Math.round(current.wind_speed_10m)} mph</div>
+                                        <div><strong>💧 Humidity:</strong> ${current.relative_humidity_2m}%</div>
+                                        <div><strong>🌡️ High/Low:</strong> ${Math.round(daily.temperature_2m_max[0])}° / ${Math.round(daily.temperature_2m_min[0])}°F</div>
+                                        <div><strong>☀️ UV Index:</strong> ${daily.uv_index_max[0]}</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sun & Moon -->
+                                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; border: 2px solid rgba(255,255,255,0.3);">
+                                    <div style="font-size: 1.1em; margin-bottom: 15px; opacity: 0.9;">Astronomy</div>
+                                    <div style="display: grid; gap: 12px; font-size: 0.95em;">
+                                        <div><strong>🌅 Sunrise:</strong> ${new Date(daily.sunrise[0]).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'})}</div>
+                                        <div><strong>🌇 Sunset:</strong> ${new Date(daily.sunset[0]).toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit'})}</div>
+                                        <div><strong>${moonPhase.emoji} Moon:</strong> ${moonPhase.name}</div>
+                                        <div><strong>🌕 Next Full:</strong> ${moonPhase.nextFull.getMonth() + 1}/${moonPhase.nextFull.getDate()}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 4-Day Forecast -->
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="color: white; margin: 20px 0 15px 0; font-size: 1.4em;">4-Day Forecast</h4>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px;">
+                        `;
+                        
+                        for (let i = 0; i < 4; i++) {
+                            const date = new Date(daily.time[i]);
+                            const dayName = i === 0 ? 'Today' : days[date.getDay()];
+                            html += `
+                                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 10px; padding: 15px; text-align: center; border: 2px solid rgba(255,255,255,0.3);">
+                                    <div style="font-weight: bold; margin-bottom: 8px;">${dayName}</div>
+                                    <div style="font-size: 0.85em; opacity: 0.8; margin-bottom: 10px;">${months[date.getMonth()]} ${date.getDate()}</div>
+                                    <div style="font-size: 2.5em; margin: 10px 0;">${getWeatherIcon(daily.weather_code[i])}</div>
+                                    <div style="font-size: 1.3em; font-weight: bold; margin: 8px 0;">${Math.round(daily.temperature_2m_max[i])}°</div>
+                                    <div style="font-size: 0.9em; opacity: 0.85;">${Math.round(daily.temperature_2m_min[i])}°F</div>
+                                </div>
+                            `;
+                        }
+                        
+                        html += `
+                                </div>
+                            </div>
+                            
+                            <!-- Weather Radar -->
+                            <div style="margin-top: 20px;">
+                                <h4 style="color: white; margin: 20px 0 15px 0; font-size: 1.4em;">📡 Weather Radar & Map</h4>
+                                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 10px; padding: 15px; border: 2px solid rgba(255,255,255,0.3);">
+                                    <iframe 
+                                        src="https://embed.windy.com/embed2.html?lat=26.503&lon=-78.652&detailLat=26.503&detailLon=-78.652&width=650&height=450&zoom=9&level=surface&overlay=radar&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=mph&metricTemp=%C2%B0F&radarRange=-1" 
+                                        style="width: 100%; height: 450px; border: none; border-radius: 5px;">
+                                    </iframe>
+                                    <div style="font-size: 0.85em; opacity: 0.7; margin-top: 10px; text-align: center;">
+                                        Interactive radar map - Click to explore | Powered by Windy
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        document.getElementById('weather-widget').innerHTML = html;
+                    }
+                    
+                    // Load weather on page load
+                    loadWeather();
+                    // Refresh every 15 minutes
+                    setInterval(loadWeather, 900000);
+                </script>
+                
+
                 <div class="tips-box" style="background: #e3f2fd; border-left-color: #2196f3;">
                     <h4>🔗 Helpful Resources & Links</h4>
                     <ul>
