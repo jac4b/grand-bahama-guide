@@ -552,8 +552,7 @@
                                     <div style="font-size: 0.8em; opacity: 0.8; margin-bottom: 8px;">${months[date.getMonth()]} ${date.getDate()}</div>
                                     <div style="font-size: 2.2em; margin: 8px 0;">${getWeatherIcon(daily.weather_code[i])}</div>
                                     <div style="font-size: 0.8em; opacity: 0.9; margin-bottom: 8px; min-height: 32px;">${condition}</div>
-                                    <div style="font-size: 1.2em; font-weight: bold; margin: 5px 0;">${Math.round(daily.temperature_2m_max[i])}°</div>
-                                    <div style="font-size: 0.85em; opacity: 0.85;">${Math.round(daily.temperature_2m_min[i])}°F</div>
+                                    <div style="font-size: 1.1em; font-weight: bold;">${Math.round(daily.temperature_2m_max[i])}° / ${Math.round(daily.temperature_2m_min[i])}°F</div>
                                 </div>
                             `;
                         }
