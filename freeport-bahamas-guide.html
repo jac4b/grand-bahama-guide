@@ -96,6 +96,50 @@
             opacity: 0.95;
         }
         
+        .countdown-container {
+            position: relative;
+            z-index: 1;
+            margin: 25px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px 30px;
+            min-width: 120px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .countdown-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .countdown-number {
+            font-size: 3em;
+            font-weight: bold;
+            line-height: 1;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .countdown-label {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
         .content {
             padding: 40px;
         }
@@ -240,6 +284,23 @@
             .activity-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .countdown-container {
+                gap: 15px;
+            }
+            
+            .countdown-box {
+                padding: 15px 20px;
+                min-width: 100px;
+            }
+            
+            .countdown-number {
+                font-size: 2.2em;
+            }
+            
+            .countdown-label {
+                font-size: 0.75em;
+            }
         }
     </style>
 </head>
@@ -255,6 +316,16 @@
                 <div class="header-slide" style="background-image: url('https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1600&q=80');"></div>
             </div>
             <h1>Grand Bahama</h1>
+            <div class="countdown-container">
+                <div class="countdown-box">
+                    <span class="countdown-number" id="days">--</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-box">
+                    <span class="countdown-number" id="hours">--</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+            </div>
             <p class="subtitle">Jeff ❤️ Nickie</p>
         </header>
         
@@ -272,6 +343,30 @@
             
             // Change slide every 4 seconds
             setInterval(nextSlide, 4000);
+            
+            // Countdown Timer
+            const tripDate = new Date('2025-12-27T15:00:00').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = tripDate - now;
+                
+                if (distance < 0) {
+                    document.getElementById('days').textContent = '00';
+                    document.getElementById('hours').textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            }
+            
+            // Update countdown immediately and then every minute
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
         </script>
         
         <div class="content">
